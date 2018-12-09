@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { Component } from 'react';
+
+
+// const withClass = (Childcomponent, className) => {
+//     return props => {
+//         return (<div className={className}><Childcomponent {...props}/></div>);
+//     };
+// };
 
 const withClass = (Childcomponent, className) => {
-    return props => {
-        return (<div className={className}><Childcomponent {...props}/></div>);
+    return class extends Component {
+        render = () => <div className={className}><Childcomponent {...this.props}/></div>
     };
 };
 

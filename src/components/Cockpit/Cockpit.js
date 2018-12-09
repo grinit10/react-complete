@@ -2,6 +2,7 @@ import React from 'react';
 
 import classes from './Cockpit.css';
 import Aux from '../../hoc/_Aux';
+import { AuthContext } from '../../containers/App';
 
 const cockpit = ( props ) => {
     const assignedClasses = [];
@@ -24,6 +25,11 @@ const cockpit = ( props ) => {
             <button
                 className={btnClass}
                 onClick={props.clicked}>Toggle Persons</button>
+            <button className={btnClass} onClick={props.loginclicked}>
+            <AuthContext.Consumer>
+                {auth => auth? 'Logout' : 'Login'}
+            </AuthContext.Consumer>
+            </button>
         </Aux>
     );
 };

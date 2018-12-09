@@ -5,10 +5,12 @@ import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
 import WithClass from '../hoc/WithClass';
 
+export const AuthContext = React.createContext(false);
+
 class App extends PureComponent {
-  constructor( props ) {
-    super( props );
-    console.log( '[App.js] Inside Constructor', props );
+  constructor(props) {
+    super(props);
+    console.log('[App.js] Inside Constructor', props);
     this.state = {
       persons: [
         { id: 'asfa1', name: 'Arnab', age: 30 },
@@ -16,16 +18,17 @@ class App extends PureComponent {
         { id: 'asdf11', name: 'Xxx', age: 0 }
       ],
       otherState: 'some other value',
-      showPersons: false
+      showPersons: false,
+      isLoggedin: false
     };
   }
 
-  componentWillMount () {
-    console.log( '[App.js] Inside componentWillMount()' );
+  componentWillMount() {
+    console.log('[App.js] Inside componentWillMount()');
   }
 
-  componentDidMount () {
-    console.log( '[App.js] Inside componentDidMount()' );
+  componentDidMount() {
+    console.log('[App.js] Inside componentDidMount()');
   }
 
   // shouldComponentUpdate ( nextProps, nextState ) {
@@ -34,12 +37,16 @@ class App extends PureComponent {
   //     nextState.showPersons !== this.state.showPersons;
   // }
 
-  componentWillUpdate ( nextProps, nextState ) {
-    console.log( '[UPDATE App.js] Inside componentWillUpdate', nextProps, nextState );
+  componentWillUpdate(nextProps, nextState) {
+    console.log(
+      '[UPDATE App.js] Inside componentWillUpdate',
+      nextProps,
+      nextState
+    );
   }
 
-  componentDidUpdate () {
-    console.log( '[UPDATE App.js] Inside componentDidUpdate' );
+  componentDidUpdate() {
+    console.log('[UPDATE App.js] Inside componentDidUpdate');
   }
 
   // state = {
@@ -52,10 +59,10 @@ class App extends PureComponent {
   //   showPersons: false
   // }
 
-  nameChangedHandler = ( event, id ) => {
-    const personIndex = this.state.persons.findIndex( p => {
+  nameChangedHandler = (event, id) => {
+    const personIndex = this.state.persons.findIndex(p => {
       return p.id === id;
-    } );
+    });
 
     const person = {
       ...this.state.persons[personIndex]
@@ -68,41 +75,63 @@ class App extends PureComponent {
     const persons = [...this.state.persons];
     persons[personIndex] = person;
 
-    this.setState( { persons: persons } );
-  }
+    this.setState({ persons: persons });
+  };
 
-  deletePersonHandler = ( personIndex ) => {
+  deletePersonHandler = personIndex => {
     // const persons = this.state.persons.slice();
     const persons = [...this.state.persons];
-    persons.splice( personIndex, 1 );
-    this.setState( { persons: persons } );
-  }
+    persons.splice(personIndex, 1);
+    this.setState({ persons: persons });
+  };
 
-  togglePersonsHandler = () => {
-    const doesShow = this.state.showPersons;
-    this.setState( { showPersons: !doesShow } );
-  }
+  togglePersonsHandler = () =>
+    this.setState((prevstate, props) => {
+      return {
+        showPersons: !prevstate.showPersons
+      };
+    });
 
-  render () {
-    console.log( '[App.js] Inside render()' );
+    toggleLoginHandler = () => {
+    this.setState((prevstate, props) => {
+      return {isLoggedin: !prevstate.isLoggedin}
+    });
+  };
+
+  render() {
+    console.log('[App.js] Inside render()');
     let persons = null;
 
-    if ( this.state.showPersons ) {
-      persons = <Persons
-        persons={this.state.persons}
-        clicked={this.deletePersonHandler}
-        changed={this.nameChangedHandler} />;
+    if (this.state.showPersons) {
+      persons = (
+        <Persons
+          persons={this.state.persons}
+          clicked={this.deletePersonHandler}
+          changed={this.nameChangedHandler}
+        />
+      );
     }
 
     return (
       <WithClass classes={classes.App}>
-        <button onClick={() => { this.setState( { showPersons: true } ) }}>Show Persons</button>
-        <Cockpit
-          appTitle={this.props.title}
-          showPersons={this.state.showPersons}
-          persons={this.state.persons}
-          clicked={this.togglePersonsHandler} />
-        {persons}
+        <button
+          onClick={() => {
+            this.setState({ showPersons: true });
+          }}
+        >
+          Show Persons
+        </button>
+
+        <AuthContext.Provider value={this.state.isLoggedin}>
+          <Cockpit
+            appTitle={this.props.title}
+            showPersons={this.state.showPersons}
+            persons={this.state.persons}
+            loginclicked={this.toggleLoginHandler}
+            clicked={this.togglePersonsHandler}
+          />
+          {persons}
+        </AuthContext.Provider>
       </WithClass>
     );
     // return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'Does this work now?'));
