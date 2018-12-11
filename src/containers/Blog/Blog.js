@@ -7,39 +7,45 @@ import NewPost from '../../components/NewPost/NewPost';
 import './Blog.css';
 
 class Blog extends Component {
-
     state = {
-        posts: []
-    }
+        posts: [],
+        selectedpostid: null
+    };
 
     componentDidMount = () => {
-        axios.get('https://jsonplaceholder.typicode.com/posts')
+        axios
+            .get('posts')
             .then(rspns => {
                 const postswithauthor = rspns.data.map(post => {
                     return {
                         ...post,
                         author: 'Arnab'
-                    }
-                })
+                    };
+                });
                 this.setState({
                     posts: [...this.state.posts],
                     posts: postswithauthor
                 });
             })
             .catch(err => console.log(err));
-    }
+    };
 
     render() {
         return (
             <div>
                 <section className="Posts">
-                    {this.state.posts.map(post => <Post key={post.id} title={post.title} author={post.author}></Post>)}
-                    {/* <Post />
-                    <Post />
-                    <Post /> */}
+                    {this.state.posts.map(post => (
+                        <Post key={post.id} 
+                        title={post.title} 
+                        author={post.author} 
+                        clicked={() => this.setState({
+                            selectedpostid: {...this.state.selectedpostid},
+                            selectedpostid: post.id
+                        })}></Post>
+                    ))}
                 </section>
                 <section>
-                    <FullPost />
+                    <FullPost postid={this.state.selectedpostid}/>
                 </section>
                 <section>
                     <NewPost />

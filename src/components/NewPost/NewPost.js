@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axiosinstance from '../../axios-instance';
 
 import './NewPost.css';
 
@@ -6,7 +7,12 @@ class NewPost extends Component {
     state = {
         title: '',
         content: '',
-        author: 'Max'
+        author: 'Arnab'
+    }
+
+    postDataHandler = () => {
+        axiosinstance.post('posts', this.state)
+        .then(response => console.log(response));
     }
 
     render () {
@@ -22,7 +28,7 @@ class NewPost extends Component {
                     <option value="Arnab">Arnab</option>
                     <option value="Appy">Appy</option>
                 </select>
-                <button>Add Post</button>
+                <button onClick={this.postDataHandler}>Add Post</button>
             </div>
         );
     }
