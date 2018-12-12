@@ -4,42 +4,46 @@ import axios from 'axios';
 import './FullPost.css';
 
 class FullPost extends Component {
-
     state = {
-        post: null
+        loadedPost: null
     }
 
-    componentDidUpdate() {
-        if ((this.props.postid && !this.state.post) || (this.state.post && this.props.postid !== this.state.post.id)) {
-            axios
-                .get('posts/' + this.props.postid)
-                .then(rspns => this.setState({
-                    post: { ...this.state.post },
-                    post: rspns.data
-                }));
+    componentDidUpdate () {
+        if ( this.props.id ) {
+            if ( !this.state.loadedPost || (this.state.loadedPost && this.state.loadedPost.id !== this.props.id) ) {
+                axios.get( '/posts/' + this.props.id )
+                    .then( response => {
+                        // console.log(response);
+                        this.setState( { loadedPost: response.data } );
+                    } );
+            }
         }
     }
 
-    deleteposthandler = () => {
-        axios.delete('posts/' + this.props.postid)
-            .then(response => console.log(response));
+    deletePostHandler = () => {
+        axios.delete('/posts/' + this.props.id)
+            .then(response => {
+                console.log(response);
+            });
     }
 
-    render() {
+    render () {
         let post = <p style={{ textAlign: 'center' }}>Please select a Post!</p>;
-        if (this.props.postid) {
-
-            post = this.state.post ? (
+        if ( this.props.id ) {
+            post = <p style={{ textAlign: 'center' }}>Loading...!</p>;
+        }
+        if ( this.state.loadedPost ) {
+            post = (
                 <div className="FullPost">
-                    <h1>{this.state.post.title}</h1>
-                    <p>{this.state.post.body}</p>
+                    <h1>{this.state.loadedPost.title}</h1>
+                    <p>{this.state.loadedPost.body}</p>
                     <div className="Edit">
-                        <button className="Delete" onClick={this.deleteposthandler}>Delete</button>
+                        <button onClick={this.deletePostHandler} className="Delete">Delete</button>
                     </div>
                 </div>
-            ) : 'Loading...';
-        }
 
+            );
+        }
         return post;
     }
 }

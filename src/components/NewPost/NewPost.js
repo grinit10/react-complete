@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import axiosinstance from '../../axios-instance';
+import axios from 'axios';
 
 import './NewPost.css';
 
@@ -7,12 +7,19 @@ class NewPost extends Component {
     state = {
         title: '',
         content: '',
-        author: 'Arnab'
+        author: 'Max'
     }
 
     postDataHandler = () => {
-        axiosinstance.post('posts', this.state)
-        .then(response => console.log(response));
+        const data = {
+            title: this.state.title,
+            body: this.state.content,
+            author: this.state.author
+        };
+        axios.post('/posts', data)
+            .then(response => {
+                console.log(response);
+            });
     }
 
     render () {
@@ -25,8 +32,8 @@ class NewPost extends Component {
                 <textarea rows="4" value={this.state.content} onChange={(event) => this.setState({content: event.target.value})} />
                 <label>Author</label>
                 <select value={this.state.author} onChange={(event) => this.setState({author: event.target.value})}>
-                    <option value="Arnab">Arnab</option>
-                    <option value="Appy">Appy</option>
+                    <option value="Max">Max</option>
+                    <option value="Manu">Manu</option>
                 </select>
                 <button onClick={this.postDataHandler}>Add Post</button>
             </div>
