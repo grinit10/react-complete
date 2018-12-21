@@ -1,3 +1,5 @@
+import * as actions from './../../store/actions/actions';
+
 const initialState = {
     results: []
 }
@@ -5,24 +7,17 @@ const initialState = {
 const reducer = (state = initialState, action) => {
 
     switch(action.type) {
-        case 'STORE_RESULTS':
+        case actions.STORE_RESULTS:
         return {
             ...state,
             results: state.results.concat(action.value)
         }
-        case 'REMOVE_RESULTS':
+        case actions.REMOVE_RESULTS:
         const delindex = state.results.indexOf(action.value)
         console.log(delindex)
         return {
             ...state,
             results: state.results.slice().filter(item => item !== action.value)
-        }
-    }
-
-    if (action.type === 'INCREMENT') {
-        return {
-            ...state,
-            counter: state.counter + 1
         }
     }
     return state;
