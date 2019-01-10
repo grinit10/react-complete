@@ -5,7 +5,7 @@ import Person from './Person/Person';
 class App extends Component {
   state = {
     people: [
-      { name: 'Arnab', age: 30, id:1 },
+      { name: 'Arnab', age: 30, id: 1 },
       { name: 'Arpita', age: 29, id: 2 },
       { name: 'Xxx', age: 0, id: 3 }
     ]
@@ -13,16 +13,22 @@ class App extends Component {
   render() {
 
     const peopleElement = this.state.people
-      .map(person => <Person key={person.id} name={person.name} age={person.age} personClicked={this.switchnamehandler} setName={(e) => this.changenameHandler(person,e)}/>
+      .map(person =>
+        <Person
+          key={person.id}
+          name={person.name}
+          age={person.age}
+          personClicked={this.switchnamehandler}
+          setName={(e) => this.changenameHandler(person, e)} />
       );
-      const style = {
-        backgroundColor: 'white',
-        font: 'inherit',
-        border: '1px solid blue',
-        padding: '8px',
-        cursor: 'pointer'
-      }
-      
+    const style = {
+      backgroundColor: 'white',
+      font: 'inherit',
+      border: '1px solid blue',
+      padding: '8px',
+      cursor: 'pointer'
+    }
+
 
     return (
       <div className='App'>
@@ -43,13 +49,12 @@ class App extends Component {
     )
   }
 
-  changenameHandler = (person,e) => {
+  changenameHandler = (person, e) => {
     const newpeople = [...this.state.people]
-    newpeople.forEach(prsn => prsn.name = prsn.id === person.id ? e.target.value: prsn.name)
+    newpeople.forEach(prsn => prsn.name = prsn.id === person.id ? e.target.value : prsn.name)
     this.setState({
       people: newpeople
     })
-
   }
 }
 
