@@ -1,5 +1,11 @@
-function* helloSaga() {
-    yield console.log('Hello Sagas!')
+import {takeEvery, put} from 'redux-saga/effects';
+
+
+function* workerSaga() {
+    yield put({type: 'Hello_Worker'});
 }
 
-export default helloSaga
+function* watcherSaga() {
+    yield takeEvery('Hello', workerSaga)
+}
+export default watcherSaga
