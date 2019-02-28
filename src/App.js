@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import Header from './components/Header';
 import ImageGrid from './components/ImageGrid';
-import configureStore from './components/redux/store';
+import configureStore from './redux/store'
 
 const store = configureStore()
 class App extends Component {
