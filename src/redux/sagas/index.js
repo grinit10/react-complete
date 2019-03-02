@@ -1,11 +1,15 @@
-import {takeEvery, put} from 'redux-saga/effects';
+// import { takeEvery, put } from 'redux-saga/effects';
+
+// import { imageaction } from './../actions';
+import watcherImagesLoad from './images.saga'
 
 
-function* workerSaga() {
-    yield put({type: 'Hello_Worker'});
-}
+// function* handleImagesLoad() {
+//     console.log('In worker')
+//     yield put({ type: 'Hello_Worker' });
+// }
 
-function* watcherSaga() {
-    yield takeEvery('Hello', workerSaga)
-}
-export default watcherSaga
+// function* watcherSaga() {
+//     yield takeEvery(imageaction.LOAD, handleImagesLoad)
+// }
+export default watcherImagesLoad

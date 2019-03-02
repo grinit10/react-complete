@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './styles.css';
 
+import { loadimages } from './../../redux/actions/actions.images'
+
 const key = '5f96323678d05ff0c4eb264ef184556868e303b32a2db88ecbf15746e6f25e02';
 
 class ImageGrid extends Component {
@@ -20,10 +22,12 @@ class ImageGrid extends Component {
     }
 
     render() {
-        const { images } = this.state;
+        const { images } = this.props.images;
+        console.log(this.props.images)
         return (
             <div className="content">
-                <section className="grid">
+                <button onClick={() => this.props.loadImages(this.props.pagenumber + 1)}>Load images</button>
+                {images ? (<section className="grid">
                     {images.map(image => (
                         <div
                             key={image.id}
@@ -37,7 +41,7 @@ class ImageGrid extends Component {
                             />
                         </div>
                     ))}
-                </section>
+                </section>) : null}
             </div>
         );
     }
@@ -45,4 +49,8 @@ class ImageGrid extends Component {
 
 const mapStateToProps = state => state;
 
-export default connect(mapStateToProps)(ImageGrid);
+const mapDispatchToProps = dispatch => ({
+    loadImages: pagenumber => dispatch(loadimages(pagenumber))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ImageGrid);

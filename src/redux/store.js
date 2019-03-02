@@ -9,7 +9,6 @@ const sagaMiddleware = createSagaMiddleware()
 const configureStore = () => {
     const store = createStore(rootReducer, applyMiddleware(sagaMiddleware));
     sagaMiddleware.run(watcherSaga)
-    store.dispatch({ type: 'Hello' })
     return store;
 }
 export default configureStore;
